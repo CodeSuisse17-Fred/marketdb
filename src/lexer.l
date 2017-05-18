@@ -14,6 +14,8 @@
 "HIGH"	 { return HIGH; }
 "LOW"	 { return LOW; }
 "GRAPH"	 { return GRAPH; }
+"MOVE"	 { return MOVE; }
+"PREDICTION" {return PREDICTION; }
 
 [,=;]	 { return yytext[0]; }
 [a-zA-z_]+ { return ETC; }
