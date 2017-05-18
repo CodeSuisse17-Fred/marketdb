@@ -14,7 +14,6 @@ int db_import(char *fn, char **argv){
 
 	struct stat st = {0};
 
-	while(fgetc(fp) != '\n');
 	while(!feof(fp)){
 		char *tickr;
 		char *date;
@@ -24,6 +23,8 @@ int db_import(char *fn, char **argv){
 		char *line = malloc(64);
 		char *lp = line;
 		fscanf(fp, "%s\n", line);
+		if(line[0] == '#')
+			continue;
 
 		// Tokenize parts
 		tickr = strsep(&line, ",");
@@ -34,7 +35,7 @@ int db_import(char *fn, char **argv){
 
 		char fname1[20], fname2[20];
 		sprintf(fname1, "%s_%.8s_%s", tickr, date, date+8);
-		printf("%s\n", fname1);
+//		printf("%s\n", fname1);
 
 		char path[40] = {0};
 		strcat(path, db);
