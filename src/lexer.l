@@ -9,6 +9,16 @@
  /* Keywords */
 "SELECT" { return SELECT; }
 "WHERE"  { return WHERE; }
+"FROM"   { return FROM; }
+"AND"    { return KAND; }
+"NAME"   { 
+			yylval.str = strdup(yytext);
+			return NAME;
+		 }
+"DATE"	 {
+			yylval.str = strdup(yytext);
+			return DATE;
+		 }
 
  /* Fields */
 "HIGH"	 { return HIGH; }
@@ -17,8 +27,15 @@
 "MOVE"	 { return MOVE; }
 "PREDICTION" {return PREDICTION; }
 
-[,=;]	 { return yytext[0]; }
-[a-zA-z_]+ { return ETC; }
+[0-9]+  {
+			yylval.num = atoi(yytext); 
+			return NUMBER;
+		}
+[-,=/:();]	 { return yytext[0]; }
+[a-zA-Z_]+ {
+				yylval.str = strdup(yytext);
+				return WORD;
+			}
 
 %%
 int yyerror(char *s, ...){
