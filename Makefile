@@ -2,9 +2,9 @@ all: marketdb
 
 CFLAGS=-I includes -std=gnu99
 
-marketdb: src/main.c src/init.c src/import.c src/gzip.c src/parser.tab.c src/lex.yy.c
+marketdb: src/main.c src/init.c src/import.c src/gzip.c src/parser.tab.c src/lex.yy.c src/calls.c
 	@echo Building marketdb
-	@gcc $(CFLAGS) -lfl -o $@ $^
+	@gcc $(CFLAGS) -lfl -o $@ $^ -lz
 
 src/parser.tab.c: src/parser.y
 	@echo Generating parser

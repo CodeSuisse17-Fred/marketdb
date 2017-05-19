@@ -8,7 +8,7 @@ char *usage = "Usage:\n%s [COMMAND] <PARAMETERS>\n\
   Commands list:\n\
     init\t[dir]\n\
     import\t[dir] [filename]\n\
-    gzip\n\
+    gzip\t[dir]\n\
     shell\n";
 
 void print_usage(char *pn){
@@ -26,6 +26,7 @@ int main(int argc, char **argv){
 		if(argc < 4) print_usage(argv[0]);
 		db_import("import", argv+2);
 	}else if(!strcmp(argv[1], "gzip")){
+		if(argc < 3) print_usage(argv[0]);
 		db_gzip("gzip", argv+2);
 	}else if(!strcmp(argv[1], "shell")){
 		yyparse();

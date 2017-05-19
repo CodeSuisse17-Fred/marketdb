@@ -1,0 +1,47 @@
+DesignDecisionsExplained.txt
+Team FRED (c624decb46fa3d60e824389311b252f6)
+Brian Hong, Jasmine Tang, Casey He
+
+	Speed is an important asset in Stock Market Analytics, where relevant data in a massive dataset
+must be extracted and analyzed as quickly and efficiently as possible in order to be of use to a trader.
+Parsing a dataset for information is straightforward, but doing so in minimal time is where the challenge
+lies. In order to tackle this challenge, we decided to create our own custom database designed specifically 
+with speed in mind. We assume that all datasets are given in the same way as the sample mock data: the
+data for each trading day is recorded #SYMBOL_NAME,TIMESTAMP,TICKER,PRICE,SIZE,in a corresponding 
+YYYYMMDD.txt file. Each file contains upwards of a million datapoints, sorted first by #SYMBOL_NAME and 
+then by its TIMESTAMP. Due to the nature of the dataset being already presorted, there is no need to run a 
+sorting algorithm to rearrange the data- that would take unneccessary time. The database, written in C, is 
+structured for three distinct directories. The main "marketdb" database structure was written to contain its 
+own set of custom commands, of which include loading the dataset. Loaded datasets are stored into the 
+"unsorted" directory, which contains a discrete set of "buckets" with parameters TICKER_DAY_HHMMSS. Each 
+bucket then contains the microseconds and the trade price of each datapoint. By utilizing buckets and only 
+storing the microseconds and the trade price, we clearly separate the labels from the relevant data in the 
+.txt file. A trader looking for data on price movement cares only about the time of a trade and its price--
+all other information is used to expedite the search for that data. It must be noted that, in the .txt file,
+the TICKER name is repeated twice and thus removed, and the volume of trade, although an important data 
+parameter, is extraneous data for traders looking for price-movement data. Thus, for the sake of optimizing 
+Time-Based Analytics, the trade volume parameter is ignored. Our "marketdb" database also includes two 
+directories "by-date" and "by-ticker", which are sorted directories that are hard-linked to the original
+ files located elsewhere in the database. This increases the ease of accessibility of the data by providing various
+parameters for the user to locate relevant information. By hard-linking the data, it becomes more accessible and manageable. Our 
+database also utilizes the EXT4 file structure, which reduces bookkeeping overhead and increases throughput. An added benefit of this 
+implementation is that a user has the ability to keep track of multiple databases. 
+
+	We created a custom query language by using  Flex and GNU Bison (Unix C-based utilities) to create a sort of "modified SQL" for 
+our database. It includes a SELECT command, which fetches the requested data. The SELECT command is extended so that, for example, 
+if a user requests a graph, the data output will be piped to GNUplot, an open-source graphing utility, for the user to visualize.
+ 
+	For the UI we created a barebones interface to allow the user to select the security name, start time, and end time. 
+	
+
+	
+	We note that any prediction algorithm gets worse and worse the further away the predictio is from the dataset. We utilized a quadratic regression 
+formula to extrapolate a future cost given a set of data. 
+
+
+	There is a very simple way of implementing a method to provide the time spent in answering each user request. Linux has a built-in command
+called the "time command", which, when called, outputs the command runtime statistics. This is a useful tool for developers who want to test
+runtimes of various programs and scripts. The time command can easily be implemented to show the duration of a user request. 
+	
+
+
