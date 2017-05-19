@@ -1,11 +1,12 @@
 #include<stdio.h>
 #include<math.h>
 
-void regression(char *arr[]){
+int main(){
 	int n,I,i, j,k,l;
 	float sumx, sumsq, sumy, sumxy, x, y, a0, a1, denom, sumx3, sumx4, sumxsqy, A[20][20], u=0.0, b[20];
 
-	n = 0;//length of data (how many data sets)
+	printf("please give a number\n");
+	scanf("%d\n", &n);//length of data (how many data sets)
 	sumx = 0;
 	sumsq = 0;
 	sumy = 0;
@@ -15,8 +16,7 @@ void regression(char *arr[]){
 	sumxsqy = 0;
 
 	for(i = 0; i < n; i++){
-		&x = 0;//time
-		&y = 0;//data
+		scanf("%f %f\n", &x, &y);
 		sumx += x; //linear regression & poly
 		sumsq += pow(x, 2); //linear regression
 		sumy += y;//linear regression & poly
