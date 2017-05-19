@@ -1,7 +1,10 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 extern int yylex();
 extern void yyerror(char *, ...);
+
 
 struct s_date {
 	int m, d, y;
@@ -16,6 +19,8 @@ struct s_timedate{
 	struct s_time *t;
 };
 
+char *get_timedate_str(struct s_timedate *);
+
 struct s_range {
 	struct s_timedate *start, *end;
 };
@@ -26,7 +31,7 @@ struct s_constr {
 };
 
 %}
-
+	
 %union{
 	int num;
 	char *str;
@@ -92,13 +97,16 @@ constr: NAME '=' WORD {
 	  	$$ = malloc(sizeof(struct s_constr));
 	$$->next = NULL;
 	  	$$->f = "DATE RANGE";
-	  	$$->v = "--BLAH--";
+	  	$$->v = calloc(44, 1); 
+	  	strcat ($$->v, get_timedate_str($4->start));
+	  	strcat($$->v, " - ");
+	  	strcat($$->v, get_timedate_str($4->end));
 	  }
 	  | DATE '=' timedate {
 	  	$$ = malloc(sizeof(struct s_constr));
 	$$->next = NULL;
 	  	$$->f = $1;
-	  	$$->v = "--BLAH--";
+	  	$$->v = get_timedate_str($3);
 	  }
 	  ;
 
@@ -141,6 +149,12 @@ time: NUMBER ':' NUMBER ':' NUMBER {
 	;
 
 %%
+
+char *get_timedate_str(struct s_timedate *std){
+	char *str = calloc(20, 1);
+	sprintf(str, "%i/%i/%i %i:%i:%i", (std->d->m), (std->d->d), (std->d->y), (std->t->h), (std->t->m), (std->t->s));
+	return str;
+}
 
 int main(){
 	return yyparse();
