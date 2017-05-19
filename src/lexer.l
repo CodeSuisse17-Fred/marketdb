@@ -25,7 +25,7 @@
 "LOW"	 { return LOW; }
 "GRAPH"	 { return GRAPH; }
 "MOVE"	 { return MOVE; }
-"PREDICTION" {return PREDICTION; }
+"PREDICTION" {return PRED; }
 
 [0-9]+  {
 			yylval.num = atoi(yytext); 
