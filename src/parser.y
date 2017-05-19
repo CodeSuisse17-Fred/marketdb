@@ -155,7 +155,3 @@ char *get_timedate_str(struct s_timedate *std){
 	sprintf(str, "%i/%i/%i %i:%i:%i", (std->d->m), (std->d->d), (std->d->y), (std->t->h), (std->t->m), (std->t->s));
 	return str;
 }
-
-int main(){
-	return yyparse();
-}

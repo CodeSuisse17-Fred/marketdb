@@ -2,14 +2,20 @@ all: marketdb
 
 CFLAGS=-I includes -std=gnu99
 
-marketdb: src/main.c src/init.c src/import.c
+marketdb: src/main.c src/init.c src/import.c src/gzip.c src/parser.tab.c src/lex.yy.c
 	@echo Building marketdb
-	@gcc $(CFLAGS) -o $@ $^
+	@gcc $(CFLAGS) -lfl -o $@ $^
 
-parsetest: src/parser.y src/lexer.l
+src/parser.tab.c: src/parser.y
+	@echo Generating parser
 	@bison -d src/parser.y -o src/parser.tab.c --defines=includes/parser.tab.h
+
+src/lex.yy.c: src/lexer.l
+	@echo Generating lexer
 	@flex -l -o src/lex.yy.c src/lexer.l
-	@gcc -o $@ src/parser.tab.c src/lex.yy.c -lfl $(CFLAGS)
+
+parsetest: src/parser.tab.c src/lex.yy.c
+	@gcc -o $@ $^ -lfl $(CFLAGS)
 
 .PHONY: clean
 clean:
