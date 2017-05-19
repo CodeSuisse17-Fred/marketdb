@@ -141,7 +141,3 @@ time: NUMBER ':' NUMBER ':' NUMBER {
 	;
 
 %%
-
-int main(){
-	return yyparse();
-}

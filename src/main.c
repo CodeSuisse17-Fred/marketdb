@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <commands.h>
+int yyparse();
 
 char *usage = "Usage:\n%s [COMMAND] <PARAMETERS>\n\
   Commands list:\n\
     init\t[dir]\n\
     import\t[dir] [filename]\n\
-	gzip\n";
+    gzip\n\
+    shell\n";
 
 void print_usage(char *pn){
 	printf(usage, pn);
@@ -25,6 +27,8 @@ int main(int argc, char **argv){
 		db_import("import", argv+2);
 	}else if(!strcmp(argv[1], "gzip")){
 		db_gzip("gzip", argv+2);
+	}else if(!strcmp(argv[1], "shell")){
+		yyparse();
 	}else{
 		printf("Unknown command \'%s\'. Aborting.\n", argv[1]);
 		exit(-1);
