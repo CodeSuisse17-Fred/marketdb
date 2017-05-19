@@ -2,7 +2,7 @@ all: marketdb
 
 CFLAGS=-I includes -std=gnu99
 
-marketdb: src/main.c src/init.c src/import.c
+marketdb: src/main.c src/init.c src/import.c src/gzip.c
 	@echo Building marketdb
 	@gcc $(CFLAGS) -o $@ $^
 

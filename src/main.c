@@ -6,7 +6,8 @@
 char *usage = "Usage:\n%s [COMMAND] <PARAMETERS>\n\
   Commands list:\n\
     init\t[dir]\n\
-    import\t[dir] [filename]\n";
+    import\t[dir] [filename]\n\
+	gzip\n";
 
 void print_usage(char *pn){
 	printf(usage, pn);
@@ -22,6 +23,8 @@ int main(int argc, char **argv){
 	}else if(!strcmp(argv[1], "import")){
 		if(argc < 4) print_usage(argv[0]);
 		db_import("import", argv+2);
+	}else if(!strcmp(argv[1], "gzip")){
+		db_gzip("gzip", argv+2);
 	}else{
 		printf("Unknown command \'%s\'. Aborting.\n", argv[1]);
 		exit(-1);
