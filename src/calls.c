@@ -4,23 +4,69 @@
 #include <calls.h>
 extern int yyerror(char *, ...);
 
-struct resultset {
-	int a;	
-};
+FILE *getprices(char *dbname, char *tickr, struct s_timedate *s, struct s_timedate *e, float *h, float *l){
+	
+	// Check date range
+	/* This function needs lots of trivial little routines that I'm not gonna do right now */
+	
+	FILE *fp = fopen("/tmp/db", "w");
 
-struct resultset *getprices(char *dbname, char *tickr, struct s_timedate *s, struct s_timedate *e, float *h, float *l){
+	char st[32];
+	char et[32];
+	char sd[32];
+	char ed[32];
+	// sprintf!!! use snprintf!!
+	sprintf(st, "%2d%2d%2d", s->t->h, s->t->m, s->t->s);
+	sprintf(et, "%2d%2d%2d", e->t->h, e->t->m, e->t->s);
+	sprintf(sd, "%2d%2d%2d", s->d->m, s->d->d, s->d->y);
+	sprintf(ed, "%2d%2d%2d", e->d->m, e->d->d, e->d->y);
+
+	FILE *fp2;
+	char path[64];
+	// Loop through time range
+	//for(;;){}
+	/* TEST */
+	strcat(path, tickr);
+	strcat(path, "_");
+	strcat(path, sd);
+	strcat(path, "_");
+	strcat(path, st);
+	fp2 = fopen(path, "r");
+
+	// Inefficient
+	int ms;
+	float price;
+	while(fscanf(fp2, "%d %f\n", &ms, &price)){
+		fprintf(fp, "%s %s %s %d %f\n", tickr, sd, st, ms, price);
+	}
+	fclose(fp2);
+
+	memset(path, 0, 64);
+	strcat(path, tickr);
+	strcat(path, "_");
+	strcat(path, ed);
+	strcat(path, "_");
+	strcat(path, et);
+	fp = fopen(path, "r");
+	
+	// Inefficient
+	while(fscanf(fp2, "%d %f\n", &ms, &price)){
+		fprintf(fp, "%s %s %s %d %f\n", tickr, sd, st, ms, price);
+	}
+	fclose(fp2);
+
+	return fp;
+}
+
+void print_prices(FILE *rs){
 
 }
 
-void print_prices(struct resultset *rs){
+char *getgraph(FILE *rs){
 
 }
 
-char *getgraph(struct resultset *rs){
-
-}
-
-void print_pred(struct resultset *rs){
+void print_pred(FILE *rs){
 
 }
 
@@ -52,7 +98,7 @@ int process(struct query *sq){
 		}
 	}
 
-	struct resultset *srs;
+	FILE *srs;
 	int geth = 0;
 	int getl = 0;
 	float high = 0;

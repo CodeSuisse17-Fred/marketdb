@@ -26,6 +26,7 @@
 "GRAPH"	 { return GRAPH; }
 "MOVE"	 { return MOVE; }
 "PREDICTION" {return PRED; }
+"PRICE" { return PRICE; }
 
 [0-9]+  {
 			yylval.num = atoi(yytext); 
